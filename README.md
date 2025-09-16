@@ -1,2 +1,0 @@
-# pymakehtml
-用python像使用tkinter创建窗口一样来创建html页面

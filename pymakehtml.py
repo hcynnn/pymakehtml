@@ -1,0 +1,156 @@
+h1n = {
+    "0" : 'no init'
+}
+
+now_h1 = 0
+
+an = {
+    "0" : 'no init'
+}
+
+now_a = 0
+
+scriptn = {
+    "0" : 'no init'
+}
+
+now_script = 0
+
+stylen = {
+    "0" : 'no init'
+}
+
+now_style = 0
+
+title = ''
+
+def take_key(name):
+    global h1n, now_h1, an, now_a, now_script, scriptn, stylen, now_style
+    if name == "h1n":
+        for key in h1n.keys():
+            if h1n[key] == 'no init':
+                return key
+        now_h1 += 1
+        h1n[f"{now_h1}"] = 'no init'
+        return take_key(name)
+
+    if name == "an":
+        for key in an.keys():
+            if an[key] == 'no init':
+                return key
+        now_a += 1
+        an[f"{now_a}"] = 'no init'
+        return take_key(name)
+
+    if name == "scriptn":
+        for key in scriptn.keys():
+            if scriptn[key] == 'no init':
+                return key
+        now_script += 1
+        h1n[f"{now_a}"] = 'no init'
+        return take_key(name)
+
+    if name == "stylen":
+        for key in stylen.keys():
+            if stylen[key] == 'no init':
+                return key
+        now_style += 1
+        stylen[f"{now_style}"] = 'no init'   # 修正这里
+        return take_key(name)
+
+class H1:
+    def __init__(self, attri, content, n):
+        self.content = content
+        self.n = n
+        self.attri = attri
+
+class Title:
+    def __init__(self, attri, content):
+        self.content = content
+        self.attri = attri
+
+class A:
+    def __init__(self, attri ,content):
+        self.content = content
+        self.attri = attri
+
+class Script:
+    def __init__(self, attri, content):
+        self.content = content
+        self.attri = attri
+
+class Style:
+    def __init__(self, attri, content):
+        self.content = content
+        self.attri = attri
+
+def ct_hx(att = "", h1_content = "H1", n = 1):
+    global h1n
+    h1n[take_key("h1n")] = H1(att, h1_content, n)
+
+    print("ct_hx is running")
+
+def ct_title(att = "", title_content = "Title"):
+    global title
+    title = Title(att, title_content)
+
+    print("ct_title is running")
+
+def ct_a(att = "", a_content = "A"):
+    global an
+    an[take_key("an")] = A(att, a_content)
+
+    print("ct_a is running")
+
+def ct_script(att = "", script_content = ""):
+    global scriptn
+    scriptn[take_key("scriptn")] = Script(att, script_content)
+
+    print("ct_script is running")
+
+def ct_style(att = "", style_content = ""):
+    global stylen
+
+    stylen[take_key("stylen")] = Style(att, style_content)
+
+    print("ct_style is running")
+
+def build(path = "./my_pyhtml.html"):
+    print("built is running")
+    with open(path, 'w') as f:
+        f.write("<!DOCTYPE html>\n")
+        f.write("<html>\n")
+        f.write("\t<head>\n")
+
+        if title != '':
+            f.write(f"\t\t<title {title.attri}>{title.content}</title>\n")
+
+            print("built_title is running")
+
+        for key in stylen.keys():
+            if isinstance(stylen[key], Style):
+                f.write(f"\t\t<style {stylen[key].attri}>{stylen[key].content}</style>\n")
+
+                print("built_style is running")
+
+        f.write("\t</head>\n")
+        f.write("\t<body>\n")
+
+        for key in h1n.keys():
+            if isinstance(h1n[key], H1):
+                f.write(f"\t\t<h{h1n[key].n} {h1n[key].attri}>{h1n[key].content}</h{h1n[key].n}>\n")
+
+                print("built_hx is running")
+
+        for key in an.keys():
+            if isinstance(an[key], A):
+                f.write(f'\t\t<a {an[key].attri}>{an[key].content}</a>\n')
+
+        for key in scriptn.keys():
+            if isinstance(scriptn[key], Script):
+                f.write(f'\t\t<script {scriptn[key].attri}>{scriptn[key].content}</script>\n')
+
+                print("built_script is running (src)")
+
+        f.write("\t</body>\n")
+        f.write("</html>")
